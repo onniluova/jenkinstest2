@@ -12,14 +12,14 @@ pipeline {
         stage('Build') {
             steps {
                 // Build the project using Maven
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
                 // Run the tests using Maven
-                sh 'mvn test'
+                bat 'mvn test'
             }
         }
 
@@ -33,11 +33,11 @@ pipeline {
         stage('Debug Info') {
             steps {
                 // Print environment variables and debug information
-                sh 'printenv'
-                sh 'mvn --version'
-                sh 'java -version'
-                sh 'git --version'
-                sh 'git config --list'
+                bat 'printenv'
+                bat 'mvn --version'
+                bat 'java -version'
+                bat 'git --version'
+                bat 'git config --list'
             }
         }
     }
