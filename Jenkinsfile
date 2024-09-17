@@ -1,38 +1,51 @@
-
 pipeline {
     agent any
 
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your-repo-url.git'
+                // Checkout the code from the repository
+                git url: 'https://github.com/onniluova/jenkinstest2.git', branch: 'master'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'mvn clean install'
+                // Build the project using Maven
+                sh 'mvn clean install'
             }
         }
 
         stage('Test') {
             steps {
-                bat 'mvn test'
+                // Run the tests using Maven
+                sh 'mvn test'
             }
         }
 
-        stage('Code Coverage') {
+        stage('Archive Results') {
             steps {
-                jacoco execPattern: '**/target/jacoco.exec'
+                // Archive the test results
+                junit '**/target/surefire-reports/*.xml'
+            }
+        }
+
+        stage('Debug Info') {
+            steps {
+                // Print environment variables and debug information
+                sh 'printenv'
+                sh 'mvn --version'
+                sh 'java -version'
+                sh 'git --version'
+                sh 'git config --list'
             }
         }
     }
 
     post {
         always {
-            junit '**/target/surefire-reports/*.xml'
-            jacoco execPattern: '**/target/jacoco.exec'
+            // Clean up workspace after build
+            cleanWs()
         }
     }
 }
-
